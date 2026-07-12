@@ -7,8 +7,24 @@ import java.util.List;
 public class Inventory {
     private HashMap<String, SparePart> parts;
 
+    public Inventory() {
+        this.parts = new HashMap<>();
+    }
+
     public void addPart(SparePart a) {
-        System.out.println("");
+        this.parts.put(a.getPartId(), a);
+
+        System.out.println("Successfully Added Part!...");
+    }
+
+    public void removePart(String partId) {
+        if(parts.containsKey(partId)){
+            parts.remove(partId);
+
+            System.out.println("Part with ID: "+ partId +" was Successfully Deleted!...");
+        } else {
+            System.out.println("Part with ID: "+ partId +" Not Found!...");
+        }
     }
 
     public void updateStock(String partId, int quantity) {
@@ -24,7 +40,12 @@ public class Inventory {
     }
 
     public ArrayList<SparePart> getAllParts() {
-        return null;
+        // return new ArrayList<>(parts.values());
+        ArrayList<SparePart> allPart = new ArrayList<>();
+
+        allPart.addAll(parts.values());
+
+        return allPart;
     }
 
     public double getTotalInventoryValue() {
