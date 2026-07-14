@@ -14,7 +14,7 @@ public class Inventory {
     public void addPart(SparePart a) {
         this.parts.put(a.getPartId(), a);
 
-        System.out.println("Successfully Added Part!...");
+        // System.out.println("Successfully Added Part!...");
     }
 
     public void removePart(String partId) {
@@ -28,15 +28,66 @@ public class Inventory {
     }
 
     public void updateStock(String partId, int quantity) {
+        if(parts.containsKey(partId)) {
+            parts.get(partId).setQuantity(quantity);
+            
+            System.out.println("Part with ID: "+ partId +" was Successfully Updated!...");
+
+            System.out.println(parts.get(partId));
+            
+        } else {
+            System.out.println("Part with ID: "+ partId +" Not Found!...");
+        }
+    }
+
+    public List<SparePart> searchByName(String partName) {
+        ArrayList<SparePart> searchResult = new ArrayList<>();  
+
+        for (SparePart partsLoop : parts.values()) {
+            if(partsLoop.getPartName().toLowerCase().contains(partName.toLowerCase())){
+                searchResult.add(partsLoop);
+            }
+        }
         
+        if(!searchResult.isEmpty()) {
+            System.out.println("Parts with Name \"" + partName + "\" found Successfully!...");
+
+            int number = 1;
+            for (SparePart found : searchResult) {
+                System.out.println(number + ". " + found.getPartId() + " " + found.getPartName());
+                number++;
+            }
+            
+        } else {
+            System.out.println("Parts with Name \"" + partName + "\" is not found!...");
+        }
+        
+        return searchResult;
     }
 
-    public List<SparePart> searchByName(String partId) {
-        return null;
-    }
+    public List<SparePart> searchByCategory(String category) {
+        ArrayList<SparePart> searchResult = new ArrayList<>();  
 
-    public List<SparePart> searchByCategory(String partId) {
-        return null;
+        for (SparePart partsLoop : parts.values()) {
+            if(partsLoop.getCategory().equalsIgnoreCase(category)){
+                searchResult.add(partsLoop);
+            }
+        }
+        
+        if(!searchResult.isEmpty()) {
+            System.out.println("Part with Category \"" + category + "\" found Successfully!...");
+
+            int number = 1;
+            for (SparePart found : searchResult) {
+                System.out.println(number + ". " + found.getPartId() + " " + found.getPartName());
+                number++;
+            }
+            
+        } else {
+            System.out.println("Parts with Category \"" + category + "\" is not found!...");
+        }
+        
+        return searchResult;
     }
 
     public ArrayList<SparePart> getAllParts() {
