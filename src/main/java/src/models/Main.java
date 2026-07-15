@@ -1,12 +1,13 @@
 package src.models;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+import src.services.InventoryService;
 
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         System.out.println("=== Automotive Inventory Management System ===\n");
 
@@ -18,7 +19,7 @@ public class Main {
 
         // System.out.println("test: Search By Name \"Engine\"");
         System.out.println("test: cari dan memperbarui data");
-        testSearchAndUpdateFunctions();
+        testInventoryService();
     }
 
     public static void initializeSampleData() {
@@ -80,8 +81,10 @@ public class Main {
         System.out.println("Total Parts: " + remaining.size() + " Parts");
     }
 
-    public static void testSearchAndUpdateFunctions() {
-        Inventory searchTest = new Inventory();
+    public static void testInventoryService() {
+        Scanner in = new Scanner(System.in);
+        Inventory inventory = new Inventory();
+        InventoryService service = new InventoryService(inventory);
         
         SparePart part1 = new SparePart("P001", "Engine Oil", "engine", 150000, 50, "PT Supplier A");
         SparePart part2 = new SparePart("P002", "Air Filter", "engine", 80000, 30, "PT Supplier B");
@@ -89,17 +92,123 @@ public class Main {
         SparePart part4 = new SparePart("P004", "Transmission Fluid", "transmission", 250000, 15, "PT Supplier D");
         SparePart part5 = new SparePart("P005", "Battery", "electrical", 500000, 10, "PT Supplier E");
 
-        searchTest.addPart(part1);
-        searchTest.addPart(part2);
-        searchTest.addPart(part3);
-        searchTest.addPart(part4);
-        searchTest.addPart(part5);
+        inventory.addPart(part1);
+        inventory.addPart(part2);
+        inventory.addPart(part3);
+        inventory.addPart(part4);
+        inventory.addPart(part5);
 
-        searchTest.searchByName("Engine");
+        // test.searchByName("Engine");
 
-        searchTest.searchByCategory("Engine");
+        // test.searchByCategory("Engine");
 
-        System.out.println("\"Update QTY = 15 in PartID P001\"");
-        searchTest.updateStock("P001", 15);
+        // System.out.println("\"Update QTY = 15 in PartID P001\"");
+        // test.updateStock("P001", 15);
+
+        while (true) {
+            System.out.println("\n=== AUTOMOTIVE INVENTORY SYSTEM ===");
+            System.out.println("1. Add Part");
+            System.out.println("2. View All Parts");
+            System.out.println("3. Search Part");
+            System.out.println("4. Update Part Stock");
+            System.out.println("5. Exit");
+            System.out.print("Choose option (1-5): ");
+            
+            String choice = in.nextLine();
+
+            switch (choice) {
+                case "1":
+                    System.out.println("\n--- Add Part ---");
+                    System.out.print("Input Part ID: ");
+                    String id = in.nextLine();
+
+                    System.out.print("Input Part Name: ");
+                    String name = in.nextLine();
+
+                    System.out.print("Input Category: ");
+                    String category = in.nextLine();
+
+                    System.out.print("Input price: ");
+                    int price = 0;
+                    while (true) {
+                        try {
+                            price = in.nextInt();
+                            in.nextLine(); 
+
+                            if (price > 0) {
+                                break;
+                            } else {
+                                System.out.println("Price must be greater than 0!");
+                            }
+
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input! Please enter a valid number.");
+                            in.nextLine(); 
+                        }
+                    }
+
+                    System.out.print("Input Quantity: ");
+                    int qty = 0;
+                    while (true) {
+                        try {
+                            qty = in.nextInt();
+                            in.nextLine(); 
+
+                            if (qty > 0) {
+                                break;
+                            } else {
+                                System.out.println("Quantity must be greater than 0!");
+                            }
+
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input! Please enter a valid number.");
+                            in.nextLine(); 
+                        }
+                    }
+
+                    System.out.print("Input Supplier Name: ");
+                    String supplier = in.nextLine();
+                    
+                    SparePart newPart = new SparePart(id, name, category, price, qty, supplier);
+                    service.addNewPart(newPart);
+                    break;
+
+                case "2":
+                    System.out.println("\n--- View All Parts ---");
+                    service.viewAllPart();
+                    break;
+
+                case "3":
+                    System.out.println("\n--- Search Part ---");
+                    System.out.println("Enter search type ('name' or 'category'):");
+                    String typeInput = in.nextLine(); 
+
+                    System.out.print("Enter keyword to search: ");
+                    String keyInput = in.nextLine();
+
+                    service.searchPart(keyInput, typeInput);
+                    break;
+
+                case "4":
+                    System.out.println("\n--- Update Part Stock ---");
+                    System.out.print("Input Part ID to update: ");
+                    String updateId = in.nextLine();
+                    System.out.print("Input New Stock Amount: ");
+                    int newStock = in.nextInt();
+                    in.nextLine(); 
+                    
+                    service.updatePartStock(updateId, newStock);
+                    break;
+
+                case "5":
+                    System.out.println("Exiting program. Thank you!");
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("Invalid option! Please choose between 1 and 5.");
+                    break;
+            }
+        }
     }
 }

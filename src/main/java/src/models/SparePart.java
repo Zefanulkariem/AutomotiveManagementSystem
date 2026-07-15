@@ -15,7 +15,6 @@ public class SparePart {
         this.price = price;
         this.quantity = quantity;
         this.supplier = supplier;
-        this.supplier = supplier;
     }
 
     public String getPartId() {
