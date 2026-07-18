@@ -6,9 +6,11 @@ import java.util.List;
 
 public class Inventory {
     private HashMap<String, SparePart> parts;
+    private ArrayList<Supplier> suppliers;
 
     public Inventory() {
         this.parts = new HashMap<>();
+        this.suppliers = new ArrayList<>();
     }
 
     public void addPart(SparePart a) {
@@ -106,5 +108,39 @@ public class Inventory {
 
     public List<SparePart> getLowStockItems(int threshold) {
         return null;
+    }
+
+    public void addSupplier(Supplier supplier) {
+        this.suppliers.add(supplier);
+        
+        System.out.println("Successfully Added Supplier!...");
+    }
+
+    public ArrayList<Supplier> getAllSuppliers() {
+        ArrayList<Supplier> allSuppliers = new ArrayList<>();
+
+        allSuppliers.addAll(suppliers);
+
+        return allSuppliers;
+    }
+
+    public Supplier getSupplierInfo(String supplierId) {
+        for (Supplier check : suppliers) {
+            if(check.getSupplierId().equalsIgnoreCase(supplierId)){
+                return check;
+            }
+        }
+        return null;
+    }
+
+    public void removeSupplier(String supplierId) {
+        for (Supplier check : suppliers) {
+            if(check.getSupplierId().equalsIgnoreCase(supplierId)){
+                removeSupplier(supplierId);
+                System.out.println("Supplier with ID: \"" + supplierId + "\" was Successfully Deleted!...");
+            } else {
+                System.out.println("Supplier with ID: \"" + supplierId + "\" Not Found!...");
+            }
+        }
     }
 }

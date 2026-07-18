@@ -3,7 +3,7 @@ package src.models;
 public class Supplier {
     private String supplierId;
     private String supplierName;
-    private String contact;
+    private String contact; //phone atau email
     private String address;
     
     public Supplier(String supplierId, String supplierName, String contact, String address) {
@@ -46,6 +46,11 @@ public class Supplier {
     }
 
     public String toString() {
-        return null;
+        return "Return format:" + 
+                "\nSupplier ID: " + supplierId +
+                "\nSupplier Name: " + supplierName +
+                "\nContact: " + contact +
+                "\nAddress: " + address 
+        ;
     }
 }

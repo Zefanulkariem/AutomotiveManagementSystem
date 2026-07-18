@@ -194,10 +194,16 @@ public class Main {
                     System.out.print("Input Part ID to update: ");
                     String updateId = in.nextLine();
                     System.out.print("Input New Stock Amount: ");
-                    int newStock = in.nextInt();
-                    in.nextLine(); 
-                    
-                    service.updatePartStock(updateId, newStock);
+                    try {
+                        System.out.print("Input New Stock Amount: ");
+                        int newStock = in.nextInt();
+                        in.nextLine();
+                        
+                        service.updatePartStock(updateId, newStock);
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid stock amount!");
+                        in.nextLine();
+                    }
                     break;
 
                 case "5":

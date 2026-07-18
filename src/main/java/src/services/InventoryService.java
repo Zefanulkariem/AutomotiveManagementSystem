@@ -18,7 +18,6 @@ public class InventoryService {
         
         if (inventory.getAllParts().stream().anyMatch(p -> p.getPartId().equals(part.getPartId()))) {
             System.out.println("Part ID already exists!");
-            return;
         } else if (part == null || part.getPartId().isBlank() || part.getPartName().isBlank()) {
             System.out.println("Part not Valid!");
         } else {
