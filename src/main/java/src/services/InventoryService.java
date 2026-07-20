@@ -8,7 +8,6 @@ import src.models.Supplier;
 
 public class InventoryService {
     private Inventory inventory;
-    private ArrayList<Supplier> suppliers;
 
     public InventoryService(Inventory inventoryInjection) {
         this.inventory = inventoryInjection;  //inject
@@ -67,5 +66,50 @@ public class InventoryService {
 
     public void calculateTotalValue() {
 
+    }
+
+    public void addSupplier(Supplier supplier) {
+        if (supplier == null || supplier.getSupplierName().isBlank()) {
+            System.out.println("Supplier not valid!");
+        } else {
+            inventory.addSupplier(supplier);
+            System.out.println("Supplier added successfully!");
+        }
+    }
+
+    public void viewAllSuppliers() {
+        ArrayList<Supplier> allSupliers = inventory.getAllSuppliers();
+
+        if (allSupliers.isEmpty()) {
+            System.out.println("Supplier is Empty..");
+        } else {
+            System.out.println("====== ALL SUPPLIERS ======");
+
+            int number = 1;
+            for (Supplier out : allSupliers) {
+                System.out.println(number + ". " + out.getSupplierId() + " " + out.getSupplierName() + " " + out.getContact() + " " + out.getAddress());
+                number++;
+            }
+
+            System.out.println("================================");
+            System.out.println("Total Suppliers: " + allSupliers.size());
+        }
+    }
+
+    public void searchSupplier(String supplierId) {
+        ArrayList<Supplier> allSupliers = inventory.getAllSuppliers();
+
+        for (Supplier find : allSupliers) {
+            if(find.getSupplierId().equalsIgnoreCase(supplierId)){
+                System.out.println("Supplier Found!...");
+                System.out.println("Supplier ID: " + find.getSupplierId() + 
+                                "\nSupplier Name: " + find.getSupplierName() + 
+                                "\nContact: " + find.getContact() + 
+                                "\nAddress: " + find.getAddress());
+                return;
+            }
+        }
+        System.out.println("Supplier Not Found!...");
+        
     }
 }

@@ -119,7 +119,7 @@ public class Inventory {
     public ArrayList<Supplier> getAllSuppliers() {
         ArrayList<Supplier> allSuppliers = new ArrayList<>();
 
-        allSuppliers.addAll(suppliers);
+        allSuppliers.addAll(suppliers); 
 
         return allSuppliers;
     }
@@ -134,13 +134,12 @@ public class Inventory {
     }
 
     public void removeSupplier(String supplierId) {
-        for (Supplier check : suppliers) {
-            if(check.getSupplierId().equalsIgnoreCase(supplierId)){
-                removeSupplier(supplierId);
-                System.out.println("Supplier with ID: \"" + supplierId + "\" was Successfully Deleted!...");
-            } else {
-                System.out.println("Supplier with ID: \"" + supplierId + "\" Not Found!...");
-            }
+        boolean removed = suppliers.removeIf(s -> s.getSupplierId().equalsIgnoreCase(supplierId));
+        
+        if (removed) {
+            System.out.println("Supplier with ID: \"" + supplierId + "\" was Successfully Deleted!...");
+        } else {
+            System.out.println("Supplier with ID: \"" + supplierId + "\" Not Found!...");
         }
     }
 }

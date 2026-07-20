@@ -46,8 +46,7 @@ public class Supplier {
     }
 
     public String toString() {
-        return "Return format:" + 
-                "\nSupplier ID: " + supplierId +
+        return "\nSupplier ID: " + supplierId +
                 "\nSupplier Name: " + supplierName +
                 "\nContact: " + contact +
                 "\nAddress: " + address 

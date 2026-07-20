@@ -98,6 +98,21 @@ public class Main {
         inventory.addPart(part4);
         inventory.addPart(part5);
 
+
+        System.out.println("\n=== Testing Supplier Management ===");
+
+        // Add suppliers
+        Supplier supplier1 = new Supplier("S001", "PT Supplier A", "021-1234567", "Jakarta");
+        Supplier supplier2 = new Supplier("S002", "PT Supplier B", "031-7654321", "Surabaya");
+        Supplier supplier3 = new Supplier("S003", "PT Supplier C", "0274-555666", "Yogyakarta");
+
+        service.addSupplier(supplier1);
+        service.addSupplier(supplier2);
+        service.addSupplier(supplier3);
+
+        // System.out.println("tes remove");
+        // inventory.removeSupplier("S001");
+
         // test.searchByName("Engine");
 
         // test.searchByCategory("Engine");
@@ -111,8 +126,12 @@ public class Main {
             System.out.println("2. View All Parts");
             System.out.println("3. Search Part");
             System.out.println("4. Update Part Stock");
-            System.out.println("5. Exit");
-            System.out.print("Choose option (1-5): ");
+            System.out.println("5. Remove Part");
+            System.out.println("6. View All Suppliers");
+            System.out.println("7. Search Suppliers");
+            System.out.println("8. Remove Supplier");
+            System.out.println("9. Exit");
+            System.out.print("Choose option (1-7): ");
             
             String choice = in.nextLine();
 
@@ -193,7 +212,6 @@ public class Main {
                     System.out.println("\n--- Update Part Stock ---");
                     System.out.print("Input Part ID to update: ");
                     String updateId = in.nextLine();
-                    System.out.print("Input New Stock Amount: ");
                     try {
                         System.out.print("Input New Stock Amount: ");
                         int newStock = in.nextInt();
@@ -207,6 +225,33 @@ public class Main {
                     break;
 
                 case "5":
+                    System.out.println("\n---Remove Parts ---");
+                    System.out.print("Input Part ID: ");
+                    String partRemove = in.nextLine();
+                    inventory.removePart(partRemove);
+                    break;
+
+                case "6":
+                    System.out.println("\n--- View All Suppliers ---");
+                    service.viewAllSuppliers();
+                    break;
+
+                case "7":
+                    System.out.println("\n--- Search Supplier ---");
+                    System.out.println("Enter search type Supplier ID:");
+                    String inSup = in.nextLine(); 
+
+                    service.searchSupplier(inSup);
+                    break;
+
+                case "8":
+                    System.out.println("\n---Remove Supplier ---");
+                    System.out.print("Input Supplier ID: ");
+                    String supplierRemove = in.nextLine();
+                    inventory.removeSupplier(supplierRemove);
+                    break;
+
+                case "9":
                     System.out.println("Exiting program. Thank you!");
                     System.exit(0);
                     break;
@@ -217,4 +262,6 @@ public class Main {
             }
         }
     }
+
+    
 }
