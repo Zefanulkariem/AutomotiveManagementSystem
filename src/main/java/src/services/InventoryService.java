@@ -112,4 +112,49 @@ public class InventoryService {
         System.out.println("Supplier Not Found!...");
         
     }
+
+    public void generateFullReport() {
+        ArrayList<SparePart> allParts = inventory.getAllParts();
+                
+        System.out.println("============== FULL INVENTORY REPORT =================");
+
+        String format = "%-3s | %-7s | %-15s | %-15s | %-8s | %-3s | %-11s\n";
+        System.out.printf(format, "NO", "Part ID", "Part Name", "Category", "Price", "Qty", "Stock Value");
+        System.out.println("----+---------+-----------------+-----------------+----------+-----+------------");
+        
+        int number = 1;
+        int totalQty = 0;
+        int totalInventoryValue = 0;
+
+        for (SparePart getAllPart : allParts) {
+            int stockValue = getAllPart.getPrice() * getAllPart.getQuantity();
+
+            System.out.printf(format, 
+                number, 
+                getAllPart.getPartId(), 
+                getAllPart.getPartName(), 
+                getAllPart.getCategory(), 
+                getAllPart.getPrice(), 
+                getAllPart.getQuantity(), 
+                String.format("%,d", stockValue) 
+            );
+            
+            totalQty += getAllPart.getQuantity();
+            totalInventoryValue += stockValue;
+
+            number++;
+        }
+
+        System.out.println("======================================================");
+        System.out.println("Summary: "
+            + "\nTotal Parts: " + allParts.size() 
+            + "\nTotal Quantity: " + totalQty 
+            + "\nTotal Inventory Value: " + totalInventoryValue
+        );
+        System.out.println("======================================================");
+    }
+
+    public void generateLowStockReport(int threshold) {
+        
+    }
 }
