@@ -154,7 +154,93 @@ public class InventoryService {
         System.out.println("======================================================");
     }
 
+    // public void generateLowStockReport(int threshold) {
+    //     System.out.println("============== LOW STOCK REPORT =================");
+
+    //     ArrayList<SparePart> allParts = inventory.getAllParts();
+
+    //     int number = 1;
+    //     int statusQritical = 0;
+
+    //     for (SparePart part : allParts) {
+    //         if (part.getQuantity() < threshold) {
+    //             if (part.getQuantity() < 10) {
+    //                 statusQritical += part.getQuantity();
+    //             }
+
+    //             String format = "%-3s | %-7s | %-15s | %-15s | %-11s | %-8s\n";
+    //             System.out.printf(format, "NO", "Part ID", "Part Name", "Category", "Stock", "Status");
+    //             System.out.println("----+---------+-----------------+-----------------+------------+--------");
+
+    //             System.out.printf(format,
+    //                         number,
+    //                         part.getPartId(),
+    //                         part.getPartName(),
+    //                         part.getCategory(),
+    //                         part.getQuantity(),
+    //                         statusQritical
+    //             );
+    //         }
+    //         number++;
+    //     }
+    // }
+
+
     public void generateLowStockReport(int threshold) {
+        ArrayList<SparePart> allParts = inventory.getAllParts();
         
+        ArrayList<SparePart> lowStockItems = new ArrayList<>();
+        for (SparePart part : allParts) {
+            if (part.getQuantity() < threshold) {
+                lowStockItems.add(part);
+            }
+        }
+        
+        if (lowStockItems.isEmpty()) {
+            System.out.println("✅ All items have sufficient stock!");
+            return;
+        }
+        
+        System.out.println("============== LOW STOCK REPORT =================");
+        System.out.println("Threshold: " + threshold + " units");
+        System.out.println();
+        
+        String format = "%-3s | %-7s | %-15s | %-15s | %-6s | %-10s\n";
+        System.out.printf(format, "NO", "Part ID", "Part Name", "Category", "Stock", "Status");
+        System.out.println("----+---------+-----------------+-----------------+-------+----------");
+        
+        int number = 1;
+        int criticalCount = 0;
+        
+        for (SparePart part : lowStockItems) {
+            String status;
+            if (part.getQuantity() < 10) {
+                status = "🔴 CRITICAL";
+                criticalCount++;
+            } else if (part.getQuantity() < threshold) {
+                status = "⚠️ LOW";
+            } else {
+                status = "OK";
+            }
+            
+            System.out.printf(format,
+                number,
+                part.getPartId(),
+                part.getPartName(),
+                part.getCategory(),
+                part.getQuantity(),
+                status
+            );
+            
+            number++;
+        }
+        
+        System.out.println("======================================================");
+        System.out.println("Summary:"
+            + "\nItems Below Threshold: " + lowStockItems.size()
+            + "\nCritical Items (< 10): " + criticalCount
+            + "\nRecommended Action: Order more stock immediately!"
+        );
+        System.out.println("======================================================");
     }
 }
