@@ -24,7 +24,7 @@ public class InventoryService {
             inventory.addPart(part); //delegasi
         }
 
-        //tambah validasi jika data duplicate.
+        //tambah validasi jika data duplicate...
     }
 
     public void viewAllPart() {
@@ -124,7 +124,7 @@ public class InventoryService {
         
         int number = 1;
         int totalQty = 0;
-        int totalInventoryValue = 0;
+        long totalInventoryValue = 0;
 
         for (SparePart getAllPart : allParts) {
             int stockValue = getAllPart.getPrice() * getAllPart.getQuantity();
@@ -154,38 +154,6 @@ public class InventoryService {
         System.out.println("======================================================");
     }
 
-    // public void generateLowStockReport(int threshold) {
-    //     System.out.println("============== LOW STOCK REPORT =================");
-
-    //     ArrayList<SparePart> allParts = inventory.getAllParts();
-
-    //     int number = 1;
-    //     int statusQritical = 0;
-
-    //     for (SparePart part : allParts) {
-    //         if (part.getQuantity() < threshold) {
-    //             if (part.getQuantity() < 10) {
-    //                 statusQritical += part.getQuantity();
-    //             }
-
-    //             String format = "%-3s | %-7s | %-15s | %-15s | %-11s | %-8s\n";
-    //             System.out.printf(format, "NO", "Part ID", "Part Name", "Category", "Stock", "Status");
-    //             System.out.println("----+---------+-----------------+-----------------+------------+--------");
-
-    //             System.out.printf(format,
-    //                         number,
-    //                         part.getPartId(),
-    //                         part.getPartName(),
-    //                         part.getCategory(),
-    //                         part.getQuantity(),
-    //                         statusQritical
-    //             );
-    //         }
-    //         number++;
-    //     }
-    // }
-
-
     public void generateLowStockReport(int threshold) {
         ArrayList<SparePart> allParts = inventory.getAllParts();
         
@@ -197,7 +165,7 @@ public class InventoryService {
         }
         
         if (lowStockItems.isEmpty()) {
-            System.out.println("✅ All items have sufficient stock!");
+            System.out.println("All items have sufficient stock!");
             return;
         }
         
@@ -215,10 +183,10 @@ public class InventoryService {
         for (SparePart part : lowStockItems) {
             String status;
             if (part.getQuantity() < 10) {
-                status = "🔴 CRITICAL";
+                status = "CRITICAL";
                 criticalCount++;
             } else if (part.getQuantity() < threshold) {
-                status = "⚠️ LOW";
+                status = "LOW";
             } else {
                 status = "OK";
             }
@@ -238,9 +206,75 @@ public class InventoryService {
         System.out.println("======================================================");
         System.out.println("Summary:"
             + "\nItems Below Threshold: " + lowStockItems.size()
-            + "\nCritical Items (< 10): " + criticalCount
+            + "\nCritical Items (less than 10): " + criticalCount
             + "\nRecommended Action: Order more stock immediately!"
         );
+        System.out.println("======================================================");
+    }
+
+    public void generateCategoryReport() {
+        ArrayList<SparePart> allParts = inventory.getAllParts();
+
+        if (allParts.isEmpty()) {
+            System.out.println("No parts in inventory!");
+        }
+
+        System.out.println("============== CATEGORY REPORT =================");
+        System.out.println();
+
+        ArrayList<String> categories = new ArrayList<>();
+
+        for (SparePart part : allParts) {
+            String category = part.getCategory();
+
+            if (!categories.contains(category)) {
+                categories.add(category);
+            }
+        }
+
+        long grandTotalValue = 0;
+        int grandTotalQty = 0;
+        
+        for (String category : categories) {
+            System.out.println("CATEGORY: " + category.toUpperCase());
+            System.out.println();
+            
+            int categoryQty = 0;
+            long categoryValue = 0;
+            int partNumber = 1;
+
+            for (SparePart part : allParts) {
+                if (part.getCategory().equalsIgnoreCase(category)) {
+                    long partValue = (long) part.getPrice() * part.getQuantity();
+                    
+                    System.out.printf("  %d. %-10s | %-20s | Qty: %-3d | Value: Rp. %,d\n",
+                        partNumber,
+                        part.getPartId(),
+                        part.getPartName(),
+                        part.getQuantity(),
+                        partValue
+                    );
+                    
+                    categoryQty += part.getQuantity();
+                    categoryValue += partValue;
+                    partNumber++;
+                }
+            }
+
+            System.out.println("  Subtotal: " + categoryQty + " units | Rp. " + String.format("%,d", categoryValue));
+            System.out.println();
+            
+            grandTotalQty += categoryQty; //total unit
+            grandTotalValue += categoryValue; //total value
+            
+        }
+
+        System.out.println("======================================================");
+        System.out.println("GRAND TOTAL:");
+        System.out.println("  Total Categories: " + categories.size());
+        System.out.println("  Total Parts: " + allParts.size());
+        System.out.println("  Total Stock: " + grandTotalQty + " units");
+        System.out.println("  Total Value: Rp. " + String.format("%,d", grandTotalValue));
         System.out.println("======================================================");
     }
 }

@@ -20,6 +20,7 @@ public class Main {
         // System.out.println("test: Search By Name \"Engine\"");
         System.out.println("test: cari dan memperbarui data");
         testInventoryService();
+        
     }
 
     public static void initializeSampleData() {
@@ -119,6 +120,15 @@ public class Main {
 
         // System.out.println("\"Update QTY = 15 in PartID P001\"");
         // test.updateStock("P001", 15);
+
+        System.out.println("--- Full Report ---");
+        service.generateFullReport();
+        
+        System.out.println("\n--- Low Stock Report (threshold 20) ---");
+        service.generateLowStockReport(50);
+
+        System.out.println("\n--- Low Stock Report (threshold 50) ---");
+        service.generateCategoryReport();
 
         while (true) {
             System.out.println("\n=== AUTOMOTIVE INVENTORY SYSTEM ===");
